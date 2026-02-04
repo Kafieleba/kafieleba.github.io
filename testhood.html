@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hooda Graphics | L'Excellence Graphique en Côte d'Ivoire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Intégration EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Configuration Tailwind pour le mode sombre basé sur une classe
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        :root {
+            --rouge: #FF4D4D;
+            --orange: #FF9F43;
+            --vert: #2ECC71;
+            --bleu: #3498DB;
+            /* Couleurs par défaut (Mode Sombre) */
+            --bg-color: #0F0F12;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --nav-bg: rgba(15, 15, 18, 0.95);
+        }
+
+        .light {
+            --bg-color: #F8F9FA;
+            --text-color: #1A1A1A;
+            --card-bg: rgba(255, 255, 255, 1);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --nav-bg: rgba(250, 250, 250, 0.95);
+        }
+
+        body {
+            font-family: 'Plus+Jakarta+Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--orange);
+            box-shadow: 0 20px 40px rgba(255, 159, 67, 0.15);
+        }
+
+        .text-gradient-warm {
+            background: linear-gradient(135deg, var(--rouge), var(--orange), var(--vert), var(--bleu));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-aurora {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255, 77, 77, 0.1) 0%, rgba(52, 152, 219, 0.05) 50%, transparent 70%);
+            top: -20%;
+            right: -10%;
+            z-index: -1;
+            filter: blur(80px);
+            animation: move 15s infinite alternate;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-10%, 10%) scale(1.1); }
+        }
+
+        .btn-warm {
+            background: linear-gradient(135deg, var(--rouge), var(--orange));
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 99px;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 10px 20px rgba(255, 77, 77, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-warm:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 77, 77, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .warm-border {
+            height: 4px;
+            width: 80px;
+            background: linear-gradient(90deg, var(--rouge), var(--orange));
+            border-radius: 2px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Status Toast */
+        #status-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            z-index: 100;
+            transform: translateY(200%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #status-toast.show { transform: translateY(0); }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--orange);
+            transform: rotate(15deg);
+        }
+    </style>
+</head>
+<body class="dark"> <!-- Par défaut en sombre -->
+
+    <div class="hero-aurora"></div>
+    <div id="status-toast" class="glass-card text-white font-bold"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-6 py-6 flex justify-between items-center transition-all duration-300" id="navbar">
+        <div class="text-2xl font-extrabold tracking-tighter flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-orange-500"></div>
+            HOODA<span class="text-gradient-warm">GRAPHICS</span>
+        </div>
+        
+        <div class="hidden md:flex gap-10 font-semibold text-sm tracking-wide items-center">
+            <a href="#accueil" class="hover:text-orange-400 transition-colors">Accueil</a>
+            <a href="#services" class="hover:text-orange-400 transition-colors">Solutions</a>
+            <a href="#portfolio" class="hover:text-orange-400 transition-colors">Projets</a>
+            <a href="#contact" class="hover:text-orange-400 transition-colors">Contact</a>
+            
+            <!-- Bascule de thème -->
+            <button id="theme-btn" class="theme-toggle" aria-label="Changer de thème">
+                <svg id="sun-icon" class="hidden text-orange-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                <svg id="moon-icon" class="text-blue-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+        </div>
+
+        <a href="#contact" class="hidden md:block bg-orange-500/10 text-orange-500 border border-orange-500/20 px-6 py-2.5 rounded-full hover:bg-orange-500 hover:text-white transition-all font-bold text-sm">
+            DISCUTONS ENSEMBLE
+        </a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="accueil" class="min-h-screen flex flex-col lg:flex-row items-center px-6 md:px-20 relative overflow-hidden">
+        <div class="max-w-3xl lg:w-1/2 z-10 pt-20">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="w-12 h-[1px] bg-orange-500"></span>
+                <span class="text-orange-500 font-bold tracking-[0.2em] text-xs uppercase">Expertise Graphique & Impression</span>
+            </div>
+            <h1 class="section-title mb-8">
+                Donnez de la <span class="text-gradient-warm">couleur</span> <br>
+                à vos ambitions.
+            </h1>
+            <p class="text-xl opacity-70 mb-12 max-w-2xl leading-relaxed">
+                De la création de logos à l'habillage de vos flottes, Hooda Graphics apporte une chaleur et une précision inégalées à chaque pixel imprimé en Côte d'Ivoire.
+            </p>
+            <div class="flex flex-wrap gap-5">
+                <a href="#contact" class="btn-warm">
+                    Lancer mon projet
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                </a>
+                <a href="#services" class="px-10 py-4 rounded-full border border-orange-500/20 hover:border-orange-500 transition-all font-bold bg-orange-500/5">Nos expertises</a>
+            </div>
+        </div>
+        <div class="lg:w-1/2 mt-16 lg:mt-0 relative group">
+            <div class="absolute -inset-4 bg-gradient-to-tr from-orange-500/20 to-red-500/20 rounded-[50px] blur-2xl opacity-30 group-hover:opacity-60 transition-opacity"></div>
+            <img src="https://images.unsplash.com/photo-1562654501-a0ccc0af3fa1?auto=format&fit=crop&q=80&w=1000" alt="[Image d'une imprimante moderne]" class="w-full h-[400px] lg:h-[600px] object-cover rounded-[40px] border border-white/10 shadow-2xl relative z-10">
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-32 px-6 md:px-20 relative">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-6">
+            <div>
+                <h2 class="section-title">Nos Solutions</h2>
+                <div class="warm-border mt-4"></div>
+            </div>
+            <p class="opacity-60 max-w-md">Une gamme complète de services pour propulser votre image de marque au sommet.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-10 rounded-[40px]">
+                <div class="w-12 h-12 mb-6 flex items-center justify-center bg-red-500/20 rounded-xl text-red-500">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Impression Grand Format</h3>
+                <p class="opacity-60 leading-relaxed">Bâches publicitaires, vinyles et kakémonos pour une visibilité maximale.</p>
+            </div>
+
+            <div class="glass-card p-10 rounded-[40px]">
+                <div class="w-12 h-12 mb-6 flex items-center justify-center bg-green-500/20 rounded-xl text-green-500">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Identité de Marque</h3>
+                <p class="opacity-60 leading-relaxed">Conception graphique sur mesure pour refléter vos valeurs uniques.</p>
+            </div>
+
+            <div class="glass-card p-10 rounded-[40px]">
+                <div class="w-12 h-12 mb-6 flex items-center justify-center bg-blue-500/20 rounded-xl text-blue-500">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/></svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Gadgets & Textiles</h3>
+                <p class="opacity-60 leading-relaxed">Objets personnalisés qui transforment vos clients en ambassadeurs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-6 md:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div>
+                <h2 class="section-title mb-8 text-gradient-warm">Prêt pour <br> l'excellence ?</h2>
+                <div class="warm-border mb-10"></div>
+                <p class="opacity-60 mb-10">Remplissez le formulaire et nous reviendrons vers vous sous 24h avec une solution sur mesure.</p>
+                <div class="flex items-center gap-6">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-xs opacity-50 uppercase font-bold tracking-widest">Localisation</div>
+                        <div class="text-xl font-semibold">Abidjan, Côte d'Ivoire</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card p-10 md:p-14 rounded-[50px]">
+                <form id="contact-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <input type="text" name="user_name" required placeholder="Nom Complet" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-5 py-4 focus:border-orange-500 outline-none transition-all">
+                        <input type="email" name="user_email" required placeholder="Email" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-5 py-4 focus:border-orange-500 outline-none transition-all">
+                    </div>
+                    <select name="service_interest" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-5 py-4 focus:border-orange-500 outline-none transition-all opacity-60">
+                        <option value="Impression">Impression Grand Format</option>
+                        <option value="Design">Design Graphique</option>
+                        <option value="Goodies">Objets Publicitaires</option>
+                    </select>
+                    <textarea name="message" required placeholder="Votre message..." rows="4" class="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-2xl px-5 py-4 focus:border-orange-500 outline-none transition-all"></textarea>
+                    <button type="submit" id="submit-btn" class="w-full btn-warm justify-center py-5">
+                        <span id="btn-text">Envoyer mon message</span>
+                        <svg id="loading-spinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-black/5 dark:border-white/5 px-6 text-center">
+        <div class="text-3xl font-extrabold mb-4 tracking-tighter">HOODA<span class="text-gradient-warm">GRAPHICS</span></div>
+        <div class="text-xs opacity-50 uppercase tracking-widest font-bold">
+            &copy; 2024 Hooda Graphics CI. Tous droits réservés.
+        </div>
+    </footer>
+
+    <script>
+        // --- GESTION DU THÈME ---
+        const themeBtn = document.getElementById('theme-btn');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+        const body = document.body;
+        const html = document.documentElement;
+
+        function setTheme(isLight) {
+            if (isLight) {
+                body.classList.add('light');
+                body.classList.remove('dark');
+                html.classList.add('light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark');
+                body.classList.remove('light');
+                html.classList.remove('light');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialisation du thème
+        const savedTheme = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        
+        if (savedTheme === 'light' || (!savedTheme && prefersLight)) {
+            setTheme(true);
+        }
+
+        themeBtn.addEventListener('click', () => {
+            setTheme(!body.classList.contains('light'));
+        });
+
+        // --- CONFIGURATION EMAILJS ---
+        const EMAILJS_PUBLIC_KEY = "VOTRE_PUBLIC_KEY"; 
+        const EMAILJS_SERVICE_ID = "service_default"; 
+        const EMAILJS_TEMPLATE_ID = "template_hooda"; 
+
+        if (EMAILJS_PUBLIC_KEY !== "VOTRE_PUBLIC_KEY") {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        }
+
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const btnText = document.getElementById('btn-text');
+        const spinner = document.getElementById('loading-spinner');
+        const toast = document.getElementById('status-toast');
+
+        const showToast = (message, isError = false) => {
+            toast.textContent = message;
+            toast.style.background = isError ? 'var(--rouge)' : 'var(--vert)';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 5000);
+        };
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (EMAILJS_PUBLIC_KEY === "VOTRE_PUBLIC_KEY") {
+                showToast("Veuillez configurer vos clés EmailJS.", true);
+                return;
+            }
+            submitBtn.disabled = true;
+            btnText.textContent = "Envoi...";
+            spinner.classList.remove('hidden');
+
+            emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, this)
+                .then(() => {
+                    showToast("Message envoyé !");
+                    contactForm.reset();
+                }, () => {
+                    showToast("Erreur d'envoi.", true);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    btnText.textContent = "Envoyer mon message";
+                    spinner.classList.add('hidden');
+                });
+        });
+
+        // Animations au scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.style.background = 'var(--nav-bg)';
+                nav.style.paddingTop = '1rem';
+                nav.style.paddingBottom = '1rem';
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+            } else {
+                nav.style.background = 'transparent';
+                nav.style.paddingTop = '1.5rem';
+                nav.style.paddingBottom = '1.5rem';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.glass-card, .section-title, img').forEach(el => {
+            el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

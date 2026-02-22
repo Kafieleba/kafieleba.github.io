@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hôtel Savane & Mer — Abidjan, Côte d'Ivoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C49A3C;
+    --gold-light: #E8C46A;
+    --green: #2D5016;
+    --green-mid: #4A7C2E;
+    --bg: #FAF7F2;
+    --bg2: #F0EBE1;
+    --bg3: #E8E0D0;
+    --text: #1A1208;
+    --text2: #4A3F2A;
+    --text3: #8A7A60;
+    --card-bg: #FFFFFF;
+    --nav-bg: rgba(250, 247, 242, 0.92);
+    --border: rgba(196, 154, 60, 0.25);
+    --shadow: rgba(26, 18, 8, 0.08);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0D0C09;
+    --bg2: #161410;
+    --bg3: #1E1B14;
+    --text: #F5F0E8;
+    --text2: #C8BBAA;
+    --text3: #7A6E5C;
+    --card-bg: #1A1810;
+    --nav-bg: rgba(13, 12, 9, 0.94);
+    --border: rgba(196, 154, 60, 0.2);
+    --shadow: rgba(0, 0, 0, 0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .nav-logo span { font-style: italic; color: var(--text); }
+
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--text2);
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.3s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 1px;
+    background: var(--gold); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+
+  .theme-toggle {
+    width: 48px; height: 26px; border-radius: 13px;
+    background: var(--bg3); border: 1px solid var(--border);
+    cursor: pointer; position: relative; transition: background 0.3s;
+    flex-shrink: 0; display: flex; align-items: center;
+  }
+  .theme-toggle-knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--gold); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; color: #0D0C09;
+  }
+  [data-theme="dark"] .theme-toggle-knob { transform: translateX(22px); }
+
+  .theme-toggle-icons {
+    width: 100%; display: flex; justify-content: space-between;
+    padding: 0 5px; font-size: 0.55rem; pointer-events: none;
+    color: var(--text3);
+  }
+
+  .btn-reserve {
+    background: var(--gold); color: #0D0C09;
+    padding: 0.55rem 1.4rem; border-radius: 2px;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s; border: none; cursor: pointer;
+  }
+  .btn-reserve:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); transition: all 0.3s; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; background: var(--bg2);
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 72% 50%, rgba(196,154,60,0.13) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 55% at 12% 82%, rgba(45,80,22,0.22) 0%, transparent 60%);
+  }
+  [data-theme="dark"] .hero-bg {
+    background:
+      radial-gradient(ellipse 70% 60% at 72% 50%, rgba(196,154,60,0.09) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 55% at 12% 82%, rgba(45,80,22,0.38) 0%, transparent 60%);
+  }
+
+  .hero-pattern {
+    position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+    width: 480px; height: 480px; opacity: 0.045;
+    background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px; pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; max-width: 820px; padding: 0 2rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.8rem);
+    line-height: 1.05; margin-bottom: 1.5rem; color: var(--text);
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+
+  .hero-subtitle {
+    font-size: 1.05rem; font-weight: 300; color: var(--text2);
+    line-height: 1.7; max-width: 520px; margin: 0 auto 2.5rem;
+  }
+
+  .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--gold); color: #0D0C09;
+    padding: 0.9rem 2.4rem; border-radius: 2px;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196,154,60,0.3); }
+
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text);
+    padding: 0.9rem 2.4rem; border-radius: 2px;
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.3s; display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--text3); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  .hero-scroll::after { content: ''; width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(7px); }
+  }
+
+  .hero-stats {
+    position: absolute; left: 4rem; bottom: 7rem;
+    display: flex; flex-direction: column; gap: 1.8rem;
+  }
+  .stat { display: flex; align-items: baseline; gap: 0.5rem; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); font-weight: 700; }
+  .stat-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); line-height: 1.4; }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 6rem 4rem; }
+
+  .section-tag {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    line-height: 1.15; margin-bottom: 1.2rem; color: var(--text);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-desc { font-size: 1rem; color: var(--text2); line-height: 1.75; max-width: 520px; font-weight: 300; }
+
+  /* ─── ABOUT ─── */
+  .about {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .about-visual { position: relative; height: 560px; }
+  .about-img-main {
+    position: absolute; right: 0; top: 0; width: 80%; height: 80%;
+    background: linear-gradient(135deg, var(--green) 0%, #1A3409 50%, #5C3D10 100%);
+    border-radius: 2px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .about-img-main svg { opacity: 0.25; }
+  .about-img-accent {
+    position: absolute; left: 0; bottom: 0; width: 55%; height: 45%;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 2px; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 0.95rem; font-style: italic;
+    color: var(--text3); text-align: center; padding: 1.5rem; line-height: 1.6;
+  }
+  .about-img-frame {
+    position: absolute; right: -20px; bottom: 60px;
+    width: 30px; height: 200px;
+    border-right: 1px solid var(--gold); border-bottom: 1px solid var(--gold); opacity: 0.35;
+  }
+  .about-features { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
+  .feature-item {
+    display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem;
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 2px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .feature-item:hover { border-color: var(--gold); transform: translateX(4px); }
+  .feature-icon {
+    width: 38px; height: 38px; flex-shrink: 0;
+    background: rgba(196,154,60,0.1); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+  }
+  .feature-text h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text); }
+  .feature-text p { font-size: 0.8rem; color: var(--text3); line-height: 1.5; }
+
+  /* ─── CHAMBRES ─── */
+  #chambres { background: var(--bg2); }
+  .chambres-header {
+    max-width: 1200px; margin: 0 auto 4rem;
+    display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;
+  }
+  .rooms-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .room-card { background: var(--card-bg); position: relative; overflow: hidden; cursor: pointer; transition: transform 0.4s; }
+  .room-card:hover { transform: scale(0.99); }
+  .room-card.featured { grid-column: span 2; }
+
+  .room-visual { height: 320px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .room-card.featured .room-visual { height: 420px; }
+  .room-visual-bg { position: absolute; inset: 0; transition: transform 0.6s ease; }
+  .room-card:hover .room-visual-bg { transform: scale(1.05); }
+  .r1 .room-visual-bg { background: linear-gradient(135deg, #1A3409 0%, #2D5016 40%, #C49A3C 100%); }
+  .r2 .room-visual-bg { background: linear-gradient(135deg, #0D1F30 0%, #1B3A5C 50%, #C49A3C 100%); }
+  .r3 .room-visual-bg { background: linear-gradient(160deg, #2A1F0D 0%, #5C3D1E 50%, #8C6A3C 100%); }
+
+  .room-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--gold); color: #0D0C09;
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.3rem 0.7rem; border-radius: 1px;
+  }
+  .room-price-float {
+    position: absolute; bottom: 1rem; right: 1rem;
+    background: var(--card-bg); color: var(--text);
+    padding: 0.6rem 1rem; text-align: right; border-left: 2px solid var(--gold);
+  }
+  .price-from { font-size: 0.6rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .price-num { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); font-weight: 700; }
+  .price-night { font-size: 0.6rem; color: var(--text3); }
+  .room-info { padding: 1.8rem; }
+  .room-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--text); }
+  .room-info p { font-size: 0.82rem; color: var(--text2); line-height: 1.6; margin-bottom: 1rem; }
+  .room-amenities { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .amenity { font-size: 0.72rem; color: var(--text3); display: flex; align-items: center; gap: 0.4rem; }
+
+  /* ─── SERVICES ─── */
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); margin-top: 4rem;
+  }
+  .service-card { background: var(--bg); padding: 2.5rem 2rem; transition: background 0.3s; text-align: center; }
+  .service-card:hover { background: var(--card-bg); }
+  .service-icon {
+    width: 56px; height: 56px; margin: 0 auto 1.5rem;
+    border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .service-card:hover .service-icon { border-color: var(--gold); background: rgba(196,154,60,0.08); }
+  .service-card h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 0.6rem; color: var(--text); }
+  .service-card p { font-size: 0.8rem; color: var(--text3); line-height: 1.65; }
+
+  /* ─── GALERIE ─── */
+  #galerie { background: var(--bg2); }
+  .galerie-inner { max-width: 1200px; margin: 0 auto; }
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 220px);
+    gap: 1.5px; margin-top: 3rem;
+  }
+  .gallery-item { overflow: hidden; cursor: pointer; position: relative; }
+  .gallery-item:nth-child(1) { grid-column: span 2; }
+  .gallery-item:nth-child(4) { grid-row: span 2; }
+  .gallery-bg { width: 100%; height: 100%; transition: transform 0.5s ease; }
+  .gallery-item:hover .gallery-bg { transform: scale(1.08); }
+  .g1 .gallery-bg { background: linear-gradient(145deg, #1A3409 0%, #4A7C2E 60%, #C49A3C 100%); }
+  .g2 .gallery-bg { background: linear-gradient(145deg, #0D1F30 0%, #2D5080 100%); }
+  .g3 .gallery-bg { background: linear-gradient(145deg, #2A1005 0%, #8B4513 100%); }
+  .g4 .gallery-bg { background: linear-gradient(145deg, #1A1A0D 0%, #3D3D1A 50%, #C49A3C 100%); }
+  .g5 .gallery-bg { background: linear-gradient(145deg, #0A1A0A 0%, #2D5016 70%, #6A8A40 100%); }
+  .gallery-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0);
+    display: flex; align-items: center; justify-content: center; transition: background 0.3s;
+  }
+  .gallery-item:hover .gallery-overlay { background: rgba(196,154,60,0.15); }
+
+  /* ─── TÉMOIGNAGES ─── */
+  .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+  .testimonials-header { text-align: center; margin-bottom: 4rem; }
+  .testimonials-header .section-tag { justify-content: center; }
+  .testimonials-header .section-tag::before { display: none; }
+  .testimonials-header .section-tag::after { content: ''; width: 24px; height: 1px; background: var(--gold); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .testimonial-card {
+    background: var(--card-bg); padding: 2rem; border: 1px solid var(--border); border-radius: 2px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .testimonial-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .quote-mark { font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 0.5; color: var(--gold); opacity: 0.22; margin-bottom: 1.5rem; display: block; }
+  .testimonial-text { font-size: 0.88rem; color: var(--text2); line-height: 1.75; font-style: italic; margin-bottom: 1.5rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+  .author-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--green-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-weight: 700; color: white; font-size: 0.9rem;
+  }
+  .author-name { font-weight: 600; font-size: 0.82rem; color: var(--text); }
+  .author-origin { font-size: 0.72rem; color: var(--text3); }
+  .stars { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 0.3rem; }
+
+  /* ─── RÉSERVATION ─── */
+  #reservation {
+    background: linear-gradient(135deg, var(--green) 0%, #1A3409 40%, #0D1F06 100%);
+    color: white; text-align: center;
+  }
+  #reservation .section-tag { color: var(--gold-light); justify-content: center; }
+  #reservation .section-tag::before { background: var(--gold-light); }
+  #reservation .section-title { color: white; }
+  .booking-form {
+    max-width: 820px; margin: 3rem auto 0;
+    display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .form-field { background: rgba(255,255,255,0.06); padding: 1.2rem 1.5rem; transition: background 0.3s; }
+  .form-field:hover, .form-field:focus-within { background: rgba(255,255,255,0.12); }
+  .form-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 0.4rem; display: block; }
+  .form-field input, .form-field select {
+    background: none; border: none; outline: none;
+    color: white; font-family: 'Jost', sans-serif; font-size: 0.9rem; font-weight: 500; width: 100%; cursor: pointer;
+  }
+  .form-field input::placeholder { color: rgba(255,255,255,0.4); }
+  .form-field select option { background: #1A3409; color: white; }
+  .btn-book {
+    background: var(--gold); color: #0D0C09; border: none; padding: 0 2.5rem;
+    font-family: 'Jost', sans-serif; font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: background 0.3s;
+  }
+  .btn-book:hover { background: var(--gold-light); }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4rem 4rem 2rem; }
+  .footer-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 3rem;
+  }
+  .footer-brand .nav-logo { font-size: 1.5rem; display: block; margin-bottom: 1rem; text-decoration: none; }
+  .footer-desc { font-size: 0.82rem; color: var(--text3); line-height: 1.7; margin-bottom: 1.5rem; }
+  .footer-social { display: flex; gap: 0.8rem; }
+  .social-btn {
+    width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: var(--text3); text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .social-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .footer-col h5 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text); font-weight: 600; margin-bottom: 1.2rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col ul li a { text-decoration: none; color: var(--text3); font-size: 0.82rem; transition: color 0.3s; }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy { font-size: 0.75rem; color: var(--text3); }
+
+  /* ─── ANIMATIONS ─── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    nav { padding: 1rem 2rem; }
+    section { padding: 5rem 2rem; }
+    .about { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { height: 380px; }
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .booking-form { grid-template-columns: 1fr 1fr; }
+    .btn-book { padding: 1.2rem; grid-column: span 2; }
+    .hero-stats { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--nav-bg); padding: 1.5rem 2rem; flex-direction: column; gap: 1.2rem;
+      border-bottom: 1px solid var(--border); backdrop-filter: blur(16px);
+    }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .rooms-grid { grid-template-columns: 1fr; }
+    .room-card.featured { grid-column: span 1; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-row: span 1; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .booking-form { grid-template-columns: 1fr; }
+    .btn-book { grid-column: span 1; padding: 1.2rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    footer { padding: 3rem 2rem 2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+    .gallery-item { height: 200px; }
+    .gallery-item:nth-child(1) { grid-column: span 1; }
+    .hero-cta { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="nav-logo">Savane <span>&</span> Mer</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#a-propos">À propos</a></li>
+    <li><a href="#chambres">Chambres</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-toggle" id="themeToggle" aria-label="Basculer mode clair/sombre">
+      <span class="theme-toggle-icons">☀ ☾</span>
+      <div class="theme-toggle-knob" id="knob">
+        <span id="knobIcon">☀</span>
+      </div>
+    </button>
+    <a href="#reservation" class="btn-reserve">Réserver</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+
+  <div class="hero-stats">
+    <div class="stat reveal">
+      <span class="stat-num">48</span>
+      <div>
+        <div class="stat-label">Suites &</div>
+        <div class="stat-label">Chambres</div>
+      </div>
+    </div>
+    <div class="stat reveal" style="transition-delay:.1s">
+      <span class="stat-num">4★</span>
+      <div>
+        <div class="stat-label">Étoiles</div>
+        <div class="stat-label">Certifiées</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">Abidjan — Côte d'Ivoire</div>
+    <h1 class="reveal">L'Élégance<br><em>Africaine</em><br>Réinventée</h1>
+    <p class="hero-subtitle reveal">
+      Où la chaleur ivoirienne rencontre le luxe contemporain. 
+      Un havre de paix au cœur de la capitale économique.
+    </p>
+    <div class="hero-cta reveal">
+      <a href="#reservation" class="btn-primary">Réserver votre séjour</a>
+      <a href="#a-propos" class="btn-outline">Découvrir l'hôtel</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- À PROPOS -->
+<section id="a-propos" style="padding: 7rem 4rem;">
+  <div class="about">
+    <div class="about-visual reveal">
+      <div class="about-img-main">
+        <svg width="140" height="140" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="40" stroke="#C49A3C" stroke-width="0.5" fill="none"/>
+          <path d="M10 50 Q50 10 90 50 Q50 90 10 50Z" stroke="#C49A3C" stroke-width="0.5" fill="none"/>
+          <circle cx="50" cy="50" r="6" fill="#C49A3C" opacity="0.4"/>
+          <path d="M50 10 L50 90M10 50 L90 50" stroke="#C49A3C" stroke-width="0.3" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="about-img-accent">
+        « Un art de vivre<br>enraciné dans la<br>terre d'Ivoire »
+      </div>
+      <div class="about-img-frame"></div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-tag">Notre histoire</div>
+      <h2 class="section-title">Un refuge de <em>luxe</em><br>au cœur d'Abidjan</h2>
+      <p class="section-desc">
+        Fondé au cœur du Plateau, l'Hôtel Savane & Mer incarne l'hospitalité ivoirienne à son plus haut niveau. 
+        Chaque détail — des tapisseries inspirées du kente aux jardins tropicaux — raconte l'histoire d'une Afrique moderne et fière.
+      </p>
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon">🌿</div>
+          <div class="feature-text">
+            <h4>Jardin Tropical Privé</h4>
+            <p>3 hectares de nature préservée avec des espèces endémiques de Côte d'Ivoire.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🍽️</div>
+          <div class="feature-text">
+            <h4>Gastronomie Ivoirienne</h4>
+            <p>Notre chef primé revisite les saveurs locales avec une touche internationale raffinée.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🌊</div>
+          <div class="feature-text">
+            <h4>Vue Lagune & Océan</h4>
+            <p>Panoramas exceptionnels sur la lagune Ébrié et le magnifique golfe de Guinée.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMBRES -->
+<section id="chambres">
+  <div class="chambres-header reveal">
+    <div>
+      <div class="section-tag">Hébergement</div>
+      <h2 class="section-title">Nos <em>Chambres</em> & Suites</h2>
+    </div>
+    <a href="#reservation" class="btn-outline" style="white-space:nowrap;">Voir la disponibilité</a>
+  </div>
+  <div class="rooms-grid">
+    <div class="room-card r1 featured reveal">
+      <div class="room-visual">
+        <div class="room-visual-bg"></div>
+        <div class="room-badge">Coup de cœur</div>
+        <div class="room-price-float">
+          <div class="price-from">À partir de</div>
+          <div class="price-num">285 000</div>
+          <div class="price-night">FCFA / nuit</div>
+        </div>
+      </div>
+      <div class="room-info">
+        <h3>Suite Présidentielle Kente</h3>
+        <p>Notre suite signature de 120 m², ornée de motifs kente et dotée d'une terrasse privée avec vue panoramique sur la lagune.</p>
+        <div class="room-amenities">
+          <span class="amenity">🛁 Bain privé</span>
+          <span class="amenity">🌿 Terrasse</span>
+          <span class="amenity">🍷 Mini-bar</span>
+          <span class="amenity">📺 Smart TV 4K</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-card r2 reveal">
+      <div class="room-visual">
+        <div class="room-visual-bg"></div>
+        <div class="room-price-float">
+          <div class="price-from">À partir de</div>
+          <div class="price-num">95 000</div>
+          <div class="price-night">FCFA / nuit</div>
+        </div>
+      </div>
+      <div class="room-info">
+        <h3>Chambre Cocotier</h3>
+        <p>Élégance et sérénité dans un écrin tropical au 8ème étage avec vue imprenable.</p>
+        <div class="room-amenities">
+          <span class="amenity">🌊 Vue lagune</span>
+          <span class="amenity">❄️ Clim. centralisée</span>
+        </div>
+      </div>
+    </div>
+    <div class="room-card r3 reveal">
+      <div class="room-visual">
+        <div class="room-visual-bg"></div>
+        <div class="room-badge">Nouveau</div>
+        <div class="room-price-float">
+          <div class="price-from">À partir de</div>
+          <div class="price-num">155 000</div>
+          <div class="price-night">FCFA / nuit</div>
+        </div>
+      </div>
+      <div class="room-info">
+        <h3>Suite Savane</h3>
+        <p>Inspirée des paysages du nord ivoirien, un voyage immersif au cœur de la nature.</p>
+        <div class="room-amenities">
+          <span class="amenity">🏕️ Décor naturel</span>
+          <span class="amenity">🛋️ Salon privé</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-inner">
+    <div class="reveal" style="text-align:center; max-width:600px; margin: 0 auto;">
+      <div class="section-tag" style="justify-content:center; padding-left:32px;">Nos services</div>
+      <h2 class="section-title">Une expérience <em>complète</em></h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🍽️</div>
+        <h4>Restaurant Gastronomique</h4>
+        <p>Cuisine ivoirienne et internationale élaborée par notre chef primé, avec vue sur le jardin tropical.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💆</div>
+        <h4>Spa & Bien-être</h4>
+        <p>Soins inspirés des rituels traditionnels africains, hammam et massages aux huiles de karité.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏊</div>
+        <h4>Piscine Panoramique</h4>
+        <p>Piscine à débordement avec vue imprenable sur le golfe de Guinée, ouverte 24h/24.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💼</div>
+        <h4>Centre d'Affaires</h4>
+        <p>Salles de conférence équipées, service de conciergerie et connexion fibre très haut débit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="galerie">
+  <div class="galerie-inner">
+    <div class="reveal">
+      <div class="section-tag">Galerie</div>
+      <h2 class="section-title">Vivez l'<em>expérience</em></h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item g1"><div class="gallery-bg"></div><div class="gallery-overlay"></div></div>
+      <div class="gallery-item g2"><div class="gallery-bg"></div><div class="gallery-overlay"></div></div>
+      <div class="gallery-item g3"><div class="gallery-bg"></div><div class="gallery-overlay"></div></div>
+      <div class="gallery-item g4"><div class="gallery-bg"></div><div class="gallery-overlay"></div></div>
+      <div class="gallery-item g5"><div class="gallery-bg"></div><div class="gallery-overlay"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section>
+  <div class="testimonials-inner">
+    <div class="testimonials-header reveal">
+      <div class="section-tag">Avis clients</div>
+      <h2 class="section-title">Ce que disent <em>nos hôtes</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Une expérience extraordinaire. La suite Kente était fastueuse et le personnel d'une gentillesse remarquable. Je reviendrai sans hésitation !</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">AM</div>
+          <div>
+            <div class="author-name">Amadou Mensah</div>
+            <div class="author-origin">Accra, Ghana</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Le meilleur hôtel d'Abidjan, sans aucun doute. Le restaurant gastronomique m'a fait découvrir des saveurs ivoiriennes inoubliables.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">SL</div>
+          <div>
+            <div class="author-name">Sophie Laurent</div>
+            <div class="author-origin">Paris, France</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Séjour d'affaires parfait. Le centre de conférence est ultra-moderne et la piscine panoramique est un vrai plus après les longues journées.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">KC</div>
+          <div>
+            <div class="author-name">Kofi Chukwu</div>
+            <div class="author-origin">Lagos, Nigeria</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSERVATION -->
+<section id="reservation">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <div class="section-tag reveal" style="justify-content:center; padding-left:32px;">Réservation</div>
+    <h2 class="section-title reveal" style="text-align:center; color:white;">Commencez votre <em>aventure</em></h2>
+    <p style="text-align:center; color:rgba(255,255,255,0.6); font-size:0.95rem;" class="reveal">
+      Vérifiez la disponibilité et réservez votre séjour en quelques instants
+    </p>
+    <div class="booking-form reveal">
+      <div class="form-field">
+        <label class="form-label">Arrivée</label>
+        <input type="date">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Départ</label>
+        <input type="date">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Chambre</label>
+        <select>
+          <option>Chambre Standard</option>
+          <option>Chambre Cocotier</option>
+          <option>Suite Savane</option>
+          <option>Suite Présidentielle</option>
+        </select>
+      </div>
+      <button class="btn-book">Vérifier →</button>
+    </div>
+    <p style="text-align:center; color:rgba(255,255,255,0.4); font-size:0.72rem; margin-top:1rem; letter-spacing:0.08em;">
+      ✓ Annulation gratuite 48h avant l'arrivée &nbsp;|&nbsp; ✓ Meilleur tarif garanti
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Savane <span>&</span> Mer</a>
+      <p class="footer-desc">L'art de l'hospitalité ivoirienne. Un hôtel 4 étoiles au cœur du Plateau, Abidjan — où chaque séjour devient un souvenir impérissable.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn" aria-label="Facebook">f</a>
+        <a href="#" class="social-btn" aria-label="Instagram">✦</a>
+        <a href="#" class="social-btn" aria-label="X">𝕏</a>
+        <a href="#" class="social-btn" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>L'hôtel</h5>
+      <ul>
+        <li><a href="#a-propos">À propos</a></li>
+        <li><a href="#chambres">Chambres & Suites</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Informations</h5>
+      <ul>
+        <li><a href="#">Événements & Mariages</a></li>
+        <li><a href="#">Séminaires</a></li>
+        <li><a href="#">Offres spéciales</a></li>
+        <li><a href="#">Politique d'annulation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Plateau, Abidjan, CI</a></li>
+        <li><a href="tel:+22527000000">📞 +225 27 00 00 00</a></li>
+        <li><a href="mailto:info@savanemer.ci">✉ info@savanemer.ci</a></li>
+        <li><a href="#">🕐 Réception 24h/24</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Hôtel Savane & Mer — Tous droits réservés</p>
+    <div style="display:flex; gap:1.5rem;">
+      <a href="#" style="font-size:0.72rem; color:var(--text3); text-decoration:none;">Mentions légales</a>
+      <a href="#" style="font-size:0.72rem; color:var(--text3); text-decoration:none;">Confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Theme Toggle ──
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const knobIcon = document.getElementById('knobIcon');
+  const saved = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  knobIcon.textContent = saved === 'dark' ? '☾' : '☀';
+
+  toggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    knobIcon.textContent = next === 'dark' ? '☾' : '☀';
+  });
+
+  // ── Hamburger ──
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ── Scroll Reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Trigger hero reveals immediately
+  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 200 + i * 150);
+  });
+</script>
+</body>
+</html>
